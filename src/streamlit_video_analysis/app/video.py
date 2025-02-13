@@ -14,6 +14,7 @@ if not st.experimental_user.is_logged_in:
         st.login("google")
     st.stop()
 
+
 allowed_users = st.secrets["auth"].get("allowed_users", [])
 user_email = st.experimental_user.email
 if user_email in allowed_users:
