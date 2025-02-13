@@ -11,3 +11,6 @@ wheels/
 
 .streamlit/secrets.toml
 *.mp4
+
+notebook
+.DS_Store
