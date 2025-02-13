@@ -15,16 +15,28 @@ altair==5.5.0
 attrs==25.1.0
     # via jsonschema
     # via referencing
+authlib==1.4.1
+    # via streamlit-video-analysis
+beautifulsoup4==4.13.3
+    # via gdown
 blinker==1.9.0
     # via streamlit
 cachetools==5.5.1
     # via streamlit
 certifi==2025.1.31
     # via requests
+cffi==1.17.1
+    # via cryptography
 charset-normalizer==3.4.1
     # via requests
 click==8.1.8
     # via streamlit
+cryptography==44.0.1
+    # via authlib
+filelock==3.17.0
+    # via gdown
+gdown==5.2.0
+    # via streamlit-video-analysis
 gitdb==4.0.12
     # via gitpython
 gitpython==3.1.44
@@ -61,10 +73,14 @@ protobuf==5.29.3
     # via streamlit
 pyarrow==19.0.0
     # via streamlit
+pycparser==2.22
+    # via cffi
 pydeck==0.9.1
     # via streamlit
 pygments==2.19.1
     # via rich
+pysocks==1.7.1
+    # via requests
 python-dateutil==2.9.0.post0
     # via pandas
 pytz==2025.1
@@ -73,6 +89,7 @@ referencing==0.36.2
     # via jsonschema
     # via jsonschema-specifications
 requests==2.32.3
+    # via gdown
     # via streamlit
 rich==13.9.4
     # via streamlit
@@ -83,6 +100,8 @@ six==1.17.0
     # via python-dateutil
 smmap==5.0.2
     # via gitdb
+soupsieve==2.6
+    # via beautifulsoup4
 streamlit==1.42.0
     # via streamlit-video-analysis
 tenacity==9.0.0
@@ -91,8 +110,11 @@ toml==0.10.2
     # via streamlit
 tornado==6.4.2
     # via streamlit
+tqdm==4.67.1
+    # via gdown
 typing-extensions==4.12.2
     # via altair
+    # via beautifulsoup4
     # via referencing
     # via streamlit
 tzdata==2025.1
