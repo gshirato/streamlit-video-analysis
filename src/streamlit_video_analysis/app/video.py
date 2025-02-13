@@ -1,5 +1,15 @@
 import streamlit as st
 import os
+import gdown
+
+
+def gdrive_folder_url(folder_id):
+    return f"https://drive.google.com/drive/folders/{folder_id}"
+
+
+def download_folder(folder_id, output, **kwargs):
+    gdown.download_folder(url=gdrive_folder_url(folder_id), output=output, **kwargs)
+
 
 st.title("Video Analysis")
 
@@ -30,10 +40,21 @@ else:
 if st.session_state["is_authenticated"]:
 
     root_dir = os.path.abspath(os.path.curdir)
-
+    IDS = st.secrets["data"].get("videos")
     video_dir = os.path.join(root_dir, "video")
-    player_name = st.selectbox("選手を選択", os.listdir(video_dir))
-    video_files = os.listdir(f"video/{player_name}")
+    temp_dir = os.path.join(".", "temp")
+    player_names = [name for name in os.listdir(video_dir) if name != ".DS_Store"]
+    player_name = st.selectbox("選手を選択", player_names)
+
+    with st.spinner(
+        f"動画を準備中: {gdrive_folder_url(IDS[player_name])}", show_time=True
+    ):
+        if not os.path.exists(os.path.join(temp_dir, player_name)):
+            os.makedirs(os.path.join(temp_dir, player_name))
+            download_folder(IDS[player_name], os.path.join(temp_dir, player_name))
+
+    video_files = os.listdir(os.path.join(temp_dir, player_name))
+
     index = st.session_state.get("video_index", 0)
 
     col1, col2 = st.columns([1, 1])
