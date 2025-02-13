@@ -26,6 +26,7 @@ beautifulsoup4==4.13.3
 blinker==1.9.0
     # via streamlit
 cachetools==5.5.1
+    # via google-auth
     # via streamlit
 certifi==2025.1.31
     # via requests
@@ -53,6 +54,26 @@ gitdb==4.0.12
     # via gitpython
 gitpython==3.1.44
     # via streamlit
+google-api-core==2.24.1
+    # via google-api-python-client
+google-api-python-client==2.161.0
+    # via streamlit-video-analysis
+google-auth==2.38.0
+    # via google-api-core
+    # via google-api-python-client
+    # via google-auth-httplib2
+    # via google-auth-oauthlib
+    # via streamlit-video-analysis
+google-auth-httplib2==0.2.0
+    # via google-api-python-client
+    # via streamlit-video-analysis
+google-auth-oauthlib==1.2.1
+    # via streamlit-video-analysis
+googleapis-common-protos==1.67.0
+    # via google-api-core
+httplib2==0.22.0
+    # via google-api-python-client
+    # via google-auth-httplib2
 idna==3.10
     # via requests
 ipykernel==6.29.5
@@ -90,6 +111,8 @@ numpy==2.2.2
     # via pandas
     # via pydeck
     # via streamlit
+oauthlib==3.2.2
+    # via requests-oauthlib
 packaging==24.2
     # via altair
     # via ipykernel
@@ -106,7 +129,12 @@ platformdirs==4.3.6
     # via jupyter-core
 prompt-toolkit==3.0.50
     # via ipython
+proto-plus==1.26.0
+    # via google-api-core
 protobuf==5.29.3
+    # via google-api-core
+    # via googleapis-common-protos
+    # via proto-plus
     # via streamlit
 psutil==6.1.1
     # via ipykernel
@@ -116,6 +144,11 @@ pure-eval==0.2.3
     # via stack-data
 pyarrow==19.0.0
     # via streamlit
+pyasn1==0.6.1
+    # via pyasn1-modules
+    # via rsa
+pyasn1-modules==0.4.1
+    # via google-auth
 pycparser==2.22
     # via cffi
 pydeck==0.9.1
@@ -123,6 +156,8 @@ pydeck==0.9.1
 pygments==2.19.1
     # via ipython
     # via rich
+pyparsing==3.2.1
+    # via httplib2
 pysocks==1.7.1
     # via requests
 python-dateutil==2.9.0.post0
@@ -138,12 +173,18 @@ referencing==0.36.2
     # via jsonschema-specifications
 requests==2.32.3
     # via gdown
+    # via google-api-core
+    # via requests-oauthlib
     # via streamlit
+requests-oauthlib==2.0.0
+    # via google-auth-oauthlib
 rich==13.9.4
     # via streamlit
 rpds-py==0.22.3
     # via jsonschema
     # via referencing
+rsa==4.9
+    # via google-auth
 six==1.17.0
     # via python-dateutil
 smmap==5.0.2
@@ -178,6 +219,8 @@ typing-extensions==4.12.2
     # via streamlit
 tzdata==2025.1
     # via pandas
+uritemplate==4.1.1
+    # via google-api-python-client
 urllib3==2.3.0
     # via requests
 wcwidth==0.2.13

@@ -42,8 +42,9 @@ if st.session_state["is_authenticated"]:
     root_dir = os.path.abspath(os.path.curdir)
     IDS = st.secrets["data"].get("videos")
     video_dir = os.path.join(root_dir, "video")
+
     temp_dir = os.path.join(".", "temp")
-    player_names = [name for name in os.listdir(video_dir) if name != ".DS_Store"]
+    player_names = [name for name in IDS.keys()]
     player_name = st.selectbox("選手を選択", player_names)
 
     with st.spinner(
@@ -53,6 +54,7 @@ if st.session_state["is_authenticated"]:
             os.makedirs(os.path.join(temp_dir, player_name))
             download_folder(IDS[player_name], os.path.join(temp_dir, player_name))
 
+    player_names = [name for name in os.listdir(temp_dir) if name != ".DS_Store"]
     video_files = os.listdir(os.path.join(temp_dir, player_name))
 
     index = st.session_state.get("video_index", 0)
@@ -74,7 +76,7 @@ if st.session_state["is_authenticated"]:
     st.session_state["video_index"] = video_files.index(uploaded_file)
 
     if uploaded_file:
-        video_path = os.path.join(video_dir, player_name, uploaded_file)
+        video_path = os.path.join(temp_dir, player_name, uploaded_file)
         st.video(video_path)
 
     if st.button("Logout"):
