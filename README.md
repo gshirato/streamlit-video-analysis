@@ -16,6 +16,8 @@ Google Drive API を使うために、Google Cloud Console で API の認証情�
     - 「アプリケーションの種類」を「デスクトップアプリ」にする
     - `credentials.json` をダウンロード
 
+## To deploy
+- preparer `requirements.txt` using `rye list > requirements.txt`
 
 ## Reference
 https://developers.google.com/drive/api/quickstart/python?hl=ja
