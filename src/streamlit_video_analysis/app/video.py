@@ -62,15 +62,17 @@ else:
         st.stop()
 
 if st.session_state["is_authenticated"]:
-
     root_dir = os.path.abspath(os.path.curdir)
+    match_map = st.secrets["meta"].get("matches")
     FOLDER_IDS: list = st.secrets["data"].get("folders")
     hierarchical_data = create_hierarchical_structure(FOLDER_IDS)
 
     temp_dir = os.path.join(".", "temp")
 
     by_type = st.selectbox("種類", list(hierarchical_data.keys()))
-    by_id = st.selectbox("試合", list(hierarchical_data[by_type].keys()))
+    by_id = st.selectbox(
+        "試合", list(hierarchical_data[by_type].keys()), format_func=match_map.get
+    )
     by_play_name = st.selectbox(
         "プレーの種類", list(hierarchical_data[by_type][by_id].keys())
     )
