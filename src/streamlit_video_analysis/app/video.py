@@ -90,43 +90,39 @@ if st.session_state["is_authenticated"]:
         by_team,
     )
 
-    if st.button("動画を検索"):
-        st.markdown("---")
-        with st.spinner(
-            f"動画を準備中: {gdrive_folder_url(folder_id)}", show_time=True
-        ):
+    st.markdown("---")
 
-            if not os.path.exists(temp_dir):
-                os.makedirs(temp_dir)
+    with st.spinner(f"動画を準備中: {gdrive_folder_url(folder_id)}", show_time=True):
+
+        if not os.path.exists(temp_dir):
+            os.makedirs(temp_dir)
             download_folder(folder_id, foldername)
 
-        video_files = sorted(
-            [name for name in os.listdir(foldername) if name != ".DS_Store"]
-        )
-        index = st.session_state.get("video_index", 0)
+    video_files = sorted(
+        [name for name in os.listdir(foldername) if name != ".DS_Store"]
+    )
+    index = st.session_state.get("video_index", 0)
 
-        col1, col2 = st.columns([1, 1])
-        with col1:
-            previous_button = st.button("◀ 前の動画", disabled=(index == 0))
-            if previous_button:
-                index = max(0, index - 1)
-        with col2:
-            next_button = st.button(
-                "次の動画 ▶", disabled=(index == len(video_files) - 1)
-            )
-            if next_button:
-                index = min(len(video_files) - 1, index + 1)
+    col1, col2 = st.columns([1, 1])
+    with col1:
+        previous_button = st.button("◀ 前の動画", disabled=(index == 0))
+        if previous_button:
             index = max(0, index - 1)
+    with col2:
+        next_button = st.button("次の動画 ▶", disabled=(index == len(video_files) - 1))
         if next_button:
             index = min(len(video_files) - 1, index + 1)
-        uploaded_file = st.selectbox("動画を選択してください", video_files, index=index)
-        st.session_state["video_index"] = index
-        st.session_state["video_index"] = video_files.index(uploaded_file)
+        index = max(0, index - 1)
+    if next_button:
+        index = min(len(video_files) - 1, index + 1)
+    uploaded_file = st.selectbox("動画を選択してください", video_files, index=index)
+    st.session_state["video_index"] = index
+    st.session_state["video_index"] = video_files.index(uploaded_file)
 
-        if uploaded_file:
-            video_path = os.path.join(foldername, uploaded_file)
-            st.markdown(f"#### [{by_team}] {by_play_name} ({by_id})")
-            st.video(video_path, autoplay=True, muted=True)
+    if uploaded_file:
+        video_path = os.path.join(foldername, uploaded_file)
+        st.markdown(f"#### [{by_team}] {by_play_name} ({by_id})")
+        st.video(video_path, autoplay=True, muted=True)
 
     if st.button("Logout"):
         st.logout()
