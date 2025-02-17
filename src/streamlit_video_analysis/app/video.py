@@ -124,6 +124,13 @@ if st.session_state["is_authenticated"]:
         st.markdown(f"#### [{by_team}] {by_play_name} ({by_id})")
         st.video(video_path, autoplay=True, muted=True)
 
+    if st.button("🔄"):
+        with st.spinner(
+            f"動画を更新中...: {gdrive_folder_url(folder_id)}", show_time=True
+        ):
+            download_folder(folder_id, foldername)
+
+    st.markdown("---")
     if st.button("Logout"):
         st.logout()
         st.session_state["is_authenticated"] = False
