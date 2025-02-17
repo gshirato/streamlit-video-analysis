@@ -11,6 +11,30 @@ def download_folder(folder_id, output, **kwargs):
     gdown.download_folder(url=gdrive_folder_url(folder_id), output=output, **kwargs)
 
 
+def create_hierarchical_structure(input_dict):
+    # Initialize the root structure
+    root = {}
+
+    for key, value in input_dict.items():
+        parts = key.split("/")
+
+        if len(parts) == 4:
+            byType, id, play_name, team = parts
+
+            # Ensure the structure exists step by step
+            if byType not in root:
+                root[byType] = {}
+            if id not in root[byType]:
+                root[byType][id] = {}
+            if play_name not in root[byType][id]:
+                root[byType][id][play_name] = {}
+
+            # Assign the value to the deepest level
+            root[byType][id][play_name][team] = value
+
+    return root
+
+
 st.title("Video Analysis")
 
 MAX_LOGIN_ATTEMPTS = 3
@@ -40,44 +64,66 @@ else:
 if st.session_state["is_authenticated"]:
 
     root_dir = os.path.abspath(os.path.curdir)
-    IDS = st.secrets["data"].get("videos")
-    video_dir = os.path.join(root_dir, "video")
+    VIDEO_IDS: list = st.secrets["data"].get("videos")
+    hierarchical_data = create_hierarchical_structure(VIDEO_IDS)
 
     temp_dir = os.path.join(".", "temp")
-    player_names = [name for name in IDS.keys()]
-    player_name = st.selectbox("選手を選択", player_names)
 
-    with st.spinner(
-        f"動画を準備中: {gdrive_folder_url(IDS[player_name])}", show_time=True
-    ):
-        if not os.path.exists(os.path.join(temp_dir, player_name)):
-            os.makedirs(os.path.join(temp_dir, player_name))
-            download_folder(IDS[player_name], os.path.join(temp_dir, player_name))
+    by_type = st.selectbox("種類", list(hierarchical_data.keys()))
+    by_id = st.selectbox("試合", list(hierarchical_data[by_type].keys()))
+    by_play_name = st.selectbox(
+        "プレーの種類", list(hierarchical_data[by_type][by_id].keys())
+    )
+    by_team = st.selectbox(
+        "チーム", list(hierarchical_data[by_type][by_id][by_play_name].keys())
+    )
 
-    player_names = [name for name in os.listdir(temp_dir) if name != ".DS_Store"]
-    video_files = os.listdir(os.path.join(temp_dir, player_name))
+    folder_id = hierarchical_data[by_type][by_id][by_play_name][by_team]
 
-    index = st.session_state.get("video_index", 0)
+    foldername = os.path.join(
+        temp_dir,
+        by_type,
+        by_id,
+        by_play_name,
+        by_team,
+    )
 
-    col1, col2 = st.columns([1, 1])
-    with col1:
-        previous_button = st.button("◀ 前の動画", disabled=(index == 0))
-        if previous_button:
+    if st.button("動画を検索"):
+        with st.spinner(
+            f"動画を準備中: {gdrive_folder_url(folder_id)}", show_time=True
+        ):
+
+            if not os.path.exists(temp_dir):
+                os.makedirs(temp_dir)
+            download_folder(folder_id, foldername)
+
+        video_files = sorted(
+            [name for name in os.listdir(foldername) if name != ".DS_Store"]
+        )
+        index = st.session_state.get("video_index", 0)
+
+        col1, col2 = st.columns([1, 1])
+        with col1:
+            previous_button = st.button("◀ 前の動画", disabled=(index == 0))
+            if previous_button:
+                index = max(0, index - 1)
+        with col2:
+            next_button = st.button(
+                "次の動画 ▶", disabled=(index == len(video_files) - 1)
+            )
+            if next_button:
+                index = min(len(video_files) - 1, index + 1)
             index = max(0, index - 1)
-    with col2:
-        next_button = st.button("次の動画 ▶", disabled=(index == len(video_files) - 1))
         if next_button:
             index = min(len(video_files) - 1, index + 1)
-        index = max(0, index - 1)
-    if next_button:
-        index = min(len(video_files) - 1, index + 1)
-    uploaded_file = st.selectbox("動画を選択してください", video_files, index=index)
-    st.session_state["video_index"] = index
-    st.session_state["video_index"] = video_files.index(uploaded_file)
+        uploaded_file = st.selectbox("動画を選択してください", video_files, index=index)
+        st.session_state["video_index"] = index
+        st.session_state["video_index"] = video_files.index(uploaded_file)
 
-    if uploaded_file:
-        video_path = os.path.join(temp_dir, player_name, uploaded_file)
-        st.video(video_path)
+        if uploaded_file:
+            video_path = os.path.join(foldername, uploaded_file)
+            st.markdown(f"#### [{by_team}] {by_play_name} ({by_id})")
+            st.video(video_path, autoplay=True, muted=True)
 
     if st.button("Logout"):
         st.logout()
