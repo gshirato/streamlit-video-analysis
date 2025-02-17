@@ -64,8 +64,8 @@ else:
 if st.session_state["is_authenticated"]:
 
     root_dir = os.path.abspath(os.path.curdir)
-    VIDEO_IDS: list = st.secrets["data"].get("videos")
-    hierarchical_data = create_hierarchical_structure(VIDEO_IDS)
+    FOLDER_IDS: list = st.secrets["data"].get("folders")
+    hierarchical_data = create_hierarchical_structure(FOLDER_IDS)
 
     temp_dir = os.path.join(".", "temp")
 
