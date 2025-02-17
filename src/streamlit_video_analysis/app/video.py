@@ -89,6 +89,7 @@ if st.session_state["is_authenticated"]:
     )
 
     if st.button("動画を検索"):
+        st.markdown("---")
         with st.spinner(
             f"動画を準備中: {gdrive_folder_url(folder_id)}", show_time=True
         ):
