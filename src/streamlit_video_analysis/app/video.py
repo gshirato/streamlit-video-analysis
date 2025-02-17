@@ -98,7 +98,7 @@ if st.session_state["is_authenticated"]:
 
             if not os.path.exists(temp_dir):
                 os.makedirs(temp_dir)
-            download_folder(folder_id, foldername)
+                download_folder(folder_id, foldername)
 
         video_files = sorted(
             [name for name in os.listdir(foldername) if name != ".DS_Store"]
