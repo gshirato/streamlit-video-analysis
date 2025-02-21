@@ -35,7 +35,12 @@ def create_hierarchical_structure(input_dict):
     return root
 
 
-st.title("Video Analysis")
+st.set_page_config(
+    page_title="ビデオ分析サポート",
+    layout="wide",
+    page_icon="📹",
+)
+st.title("ビデオ分析サポート")
 
 MAX_LOGIN_ATTEMPTS = 3
 if "login_attempts" not in st.session_state:
