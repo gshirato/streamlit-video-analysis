@@ -93,9 +93,8 @@ if st.session_state["is_authenticated"]:
     st.markdown("---")
 
     with st.spinner(f"動画を準備中: {gdrive_folder_url(folder_id)}", show_time=True):
-
-        if not os.path.exists(temp_dir):
-            os.makedirs(temp_dir)
+        if not os.path.exists(foldername):
+            os.makedirs(foldername)
             download_folder(folder_id, foldername)
 
     video_files = sorted(
