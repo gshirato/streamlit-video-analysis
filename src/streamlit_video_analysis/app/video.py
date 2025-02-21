@@ -37,7 +37,6 @@ def create_hierarchical_structure(input_dict):
 
 st.set_page_config(
     page_title="ビデオ分析サポート",
-    layout="wide",
     page_icon="📹",
 )
 st.title("ビデオ分析サポート")
