@@ -21,3 +21,18 @@ Google Drive API を使うために、Google Cloud Console で API の認証情�
 
 ## Reference
 https://developers.google.com/drive/api/quickstart/python?hl=ja
+
+
+## secrets.toml
+
+```toml
+[auth]
+redirect_uri = "https://<your_app_domain>.streamlit.app/<callback_endpoint>"
+cookie_secret = "<cookie_secret_of_your_choice>"
+allowed_users = ["email@example.com"]
+
+[auth.google]
+client_id = "<id>"
+client_secret = "<secret>"
+server_metadata_url = "https://accounts.google.com/.well-known/openid-configuration"
+```
